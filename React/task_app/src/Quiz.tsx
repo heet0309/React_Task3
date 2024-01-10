@@ -7,7 +7,7 @@ type Question = {
 };
 
 type QuizState = {
-  QuetionIndex: number;
+  QuestionIndex: number;
   userAnswers: number[];
 };
 
@@ -31,18 +31,18 @@ const questions: Question[] = [
 
 const Quiz: React.FC = () => {
   const [quizState, setQuizState] = useState<QuizState>({
-    QuetionIndex: 0,
+    QuestionIndex: 0,
     userAnswers: [],
   });
 
-  const { QuetionIndex, userAnswers } = quizState;
-  const currentQuestion = questions[QuetionIndex];
+  const { QuestionIndex, userAnswers } = quizState;
+  const currentQuestion = questions[QuestionIndex];
 
   const handleNextClick = (OptionIndex: number) => {
     setQuizState((prevState) => ({
       ...prevState,
       userAnswers: [...prevState.userAnswers, OptionIndex],
-      QuetionIndex: prevState.QuetionIndex + 1,
+      QuestionIndex: prevState.QuestionIndex + 1,
     }));
   };
 
@@ -50,38 +50,45 @@ const Quiz: React.FC = () => {
     setQuizState((prevState) => ({
       ...prevState,
       userAnswers: prevState.userAnswers.slice(0, -1),
-      QuetionIndex: prevState.QuetionIndex - 1,
+      QuestionIndex: prevState.QuestionIndex - 1,
     }));
   };
-  
 
-  const calculateScore = () => {
-    return userAnswers.reduce((score, userAnswer, index) => {
+  const handleResetClick = () => {
+    setQuizState({
+      QuestionIndex: 0,
+      userAnswers: [],
+    });
+  };
+
+  const calculateresult = () => {
+    return userAnswers.reduce((result, userAnswer, index) => {
       const correctOptionIndex = questions[index].correctOptionIndex;
-      return userAnswer === correctOptionIndex ? score + 1 : score;
+      return userAnswer === correctOptionIndex ? result + 1 : result;
     }, 0);
   };
 
   const renderResult = () => {
-    const score = calculateScore();
+    const result = calculateresult();
     return (
       <div>
-        <h2>Your Score: {score}/{questions.length}</h2>
+        <h2>Your result: {result}/{questions.length}</h2>
+        <button onClick={handleResetClick}>Reset</button>
       </div>
     );
   };
 
   const handleButtonClick = (index: number) => {
-    if (QuetionIndex < questions.length) {
+    if (QuestionIndex < questions.length) {
       handleNextClick(index);
     }
   };
 
   return (
     <div>
-      {QuetionIndex < questions.length ? (
+      {QuestionIndex < questions.length ? (
         <div>
-          <h2>Question {QuetionIndex + 1}</h2>
+          <h2>Question {QuestionIndex + 1}</h2>
           <p>{currentQuestion.questionText}</p>
           <div>
             {currentQuestion.options.map((option, index) => (
@@ -90,10 +97,10 @@ const Quiz: React.FC = () => {
               </button>
             ))}
           </div>
-          <button onClick={() => handleNextClick(-1)} disabled={QuetionIndex === questions.length - 1}>
+          <button onClick={() => handleNextClick(-1)} disabled={QuestionIndex === questions.length - 1}>
             Next
           </button>
-          <button onClick={() => handlePrevClick(-1)} >
+          <button onClick={() => handlePrevClick(-1)} disabled={QuestionIndex === 0}>
             Prev
           </button>
         </div>

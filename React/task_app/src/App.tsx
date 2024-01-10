@@ -9,11 +9,11 @@ import ToggleButton from './toggleButton'
 export function App() {
   return (
     <div>
-        <List/>
+        {/* <List/>
         <ToggleButton/>
         <Timer/>
         <SearchFilter/>
-        <GuessNumber/>
+        <GuessNumber/> */}
         <Quiz/>
     </div>
 
