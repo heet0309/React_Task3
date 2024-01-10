@@ -22,5 +22,5 @@
   },
   "include": [
     "src"
-, "../new_task_app/src/NumberGame.tsx"  ]
+  ]
 }
