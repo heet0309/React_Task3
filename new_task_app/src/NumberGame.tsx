@@ -12,8 +12,10 @@ const GuessNumber = () => {
 
 
   const handleGuess = () => {
-    if (userGuess === null) return;
-
+    if (userGuess === null) {
+      alert('Please enter a valid guess.');
+      return;
+    }
     if (userGuess === secretNumber) {
       alert('You guessed the correct number.');
     } else if (userGuess < secretNumber) {
